@@ -10,7 +10,7 @@ class S7Comm:
         self._s7conn = self._s7obj.s7comm_connect(c_address)
 
     def _readWord(self, db, num, value):
-        ret = self._s7obj.s7comm_read_word(self._s7conn, db, num, ctypes.byref(value));
+        ret = self._s7obj.s7comm_read_word(self._s7conn, db, num, ctypes.byref(value))
 
         if ret != 0:
             raise "Aiii"
