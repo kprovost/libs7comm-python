@@ -64,3 +64,15 @@ class S7Comm:
 
     def writeUInt8(self, db, num, value):
         self._writeByte(db, num, ctypes.c_uint8(value))
+
+    def readBit(self, db, num):
+        value = ctypes.c_uint8()
+        ret = self._s7obj.s7comm_read_bit(self._s7conn, db, num, ctypes.byref(value))
+
+        if ret != 0:
+            raise "Aiii"
+
+        if value.value != 0:
+            return 1
+        else:
+            return 0
