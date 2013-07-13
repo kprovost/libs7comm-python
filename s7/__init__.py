@@ -36,3 +36,19 @@ class S7Comm:
 
     def writeInt16(self, db, num, value):
         self._writeWord(db, num, value)
+
+    def _readByte(self, db, num, value):
+        ret = self._s7obj.s7comm_read_byte(self._s7conn, db, num, ctypes.byref(value))
+
+        if ret != 0:
+            raise "Aiii"
+
+    def readInt8(self, db, num):
+        value = ctypes.c_int8()
+        self._readByte(db, num, value)
+        return value.value
+
+    def readUInt8(self, db, num):
+        value = ctypes.c_uint8()
+        self._readByte(db, num, value)
+        return value.value
