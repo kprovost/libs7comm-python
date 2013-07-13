@@ -52,3 +52,15 @@ class S7Comm:
         value = ctypes.c_uint8()
         self._readByte(db, num, value)
         return value.value
+
+    def _writeByte(self, db, num, value):
+        ret = self._s7obj.s7comm_write_byte(self._s7conn, db, num, value)
+
+        if ret != 0:
+            raise "Aiii"
+
+    def writeInt8(self, db, num, value):
+        self._writeByte(db, num, ctypes.c_int8(value))
+
+    def writeUInt8(self, db, num, value):
+        self._writeByte(db, num, ctypes.c_uint8(value))
