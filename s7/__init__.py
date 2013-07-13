@@ -9,11 +9,18 @@ class S7Comm:
         c_address = ctypes.create_string_buffer("10.0.3.9")
         self._s7conn = self._s7obj.s7comm_connect(c_address)
 
-    def readWord(self, db, num):
-        value = ctypes.c_int()
+    def _readWord(self, db, num, value):
         ret = self._s7obj.s7comm_read_word(self._s7conn, db, num, ctypes.byref(value));
 
         if ret != 0:
             raise "Aiii"
 
+    def readInt16(self, db, num):
+        value = ctypes.c_int16()
+        self._readWord(db, num, value)
+        return value.value
+
+    def readUInt16(self, db, num):
+        value = ctypes.c_uint16()
+        self._readWord(db, num, value)
         return value.value
