@@ -24,3 +24,15 @@ class S7Comm:
         value = ctypes.c_uint16()
         self._readWord(db, num, value)
         return value.value
+
+    def _writeWord(self, db, num, value):
+        ret = self._s7obj.s7comm_write_word(self._s7conn, db, num, value)
+
+        if ret != 0:
+            raise "Aiii"
+
+    def writeUIn16(self, db, num, value):
+        self._writeWord(db, num, value)
+
+    def writeInt16(self, db, num, value):
+        self._writeWord(db, num, value)
