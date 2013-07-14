@@ -81,3 +81,14 @@ class S7Comm:
             return 1
         else:
             return 0
+
+    def writeBit(self, db, num, value):
+        val = ctypes.c_uint8()
+        if value:
+            val.value = 1
+        else:
+            val.value = 0
+        ret = self._s7obj.s7comm_write_bit(self._s7conn, db, num, val)
+
+        if ret != 0:
+            raise "Aiii"
