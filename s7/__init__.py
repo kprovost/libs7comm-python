@@ -9,6 +9,11 @@ class S7Comm:
         c_address = ctypes.create_string_buffer("10.0.3.9")
         self._s7conn = self._s7obj.s7comm_connect(c_address)
 
+    def __del__(self):
+        self._s7obj.s7comm_disconnect(self._s7conn)
+        self._s7conn = None
+        self._address = None
+
     def _readWord(self, db, num, value):
         ret = self._s7obj.s7comm_read_word(self._s7conn, db, num, ctypes.byref(value))
 
