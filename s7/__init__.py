@@ -6,7 +6,7 @@ class S7Comm:
         self._address = address
         self._s7obj = ctypes.CDLL("libs7comm.so.0.1")
 
-        c_address = ctypes.create_string_buffer("10.0.3.9")
+        c_address = ctypes.create_string_buffer(address)
         self._s7conn = self._s7obj.s7comm_connect(c_address)
         if not self._s7conn:
             raise "Unable to connect"
