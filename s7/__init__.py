@@ -20,7 +20,8 @@ class S7Comm:
             raise S7Exception("Unable to connect", -1)
 
     def __del__(self):
-        self._s7obj.s7comm_disconnect(self._s7conn)
+        if self._s7conn:
+            self._s7obj.s7comm_disconnect(self._s7conn)
         self._s7conn = None
         self._address = None
 
