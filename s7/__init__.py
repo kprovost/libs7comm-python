@@ -8,6 +8,8 @@ class S7Comm:
 
         c_address = ctypes.create_string_buffer("10.0.3.9")
         self._s7conn = self._s7obj.s7comm_connect(c_address)
+        if not self._s7conn:
+            raise "Unable to connect"
 
     def __del__(self):
         self._s7obj.s7comm_disconnect(self._s7conn)
