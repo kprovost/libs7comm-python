@@ -1,6 +1,14 @@
 #!/usr/bin/env python
 import ctypes
 
+class S7Exception:
+    def __init__(self, msg, err):
+        self._err = err
+        self._msg = msg
+
+    def __str__(self):
+        return "%s (%d)" % (self._msg, self._err)
+
 class S7Comm:
     def __init__(self, address):
         self._address = address
@@ -9,18 +17,22 @@ class S7Comm:
         c_address = ctypes.create_string_buffer(address)
         self._s7conn = self._s7obj.s7comm_connect(c_address)
         if not self._s7conn:
-            raise "Unable to connect"
+            raise S7Exception("Unable to connect", -1)
 
     def __del__(self):
         self._s7obj.s7comm_disconnect(self._s7conn)
         self._s7conn = None
         self._address = None
 
+    def _err_to_string(self, err):
+        self._s7obj.err_to_string.restype = ctypes.c_char_p
+        return self._s7obj.err_to_string(err)
+
     def _readWord(self, db, num, value):
         ret = self._s7obj.s7comm_read_word(self._s7conn, db, num, ctypes.byref(value))
 
         if ret != 0:
-            raise "Aiii"
+            raise S7Exception(self._err_to_string(ret), ret)
 
     def readInt16(self, db, num):
         value = ctypes.c_int16()
@@ -36,7 +48,7 @@ class S7Comm:
         ret = self._s7obj.s7comm_write_word(self._s7conn, db, num, value)
 
         if ret != 0:
-            raise "Aiii"
+            raise S7Exception(self._err_to_string(ret), ret)
 
     def writeUIn16(self, db, num, value):
         self._writeWord(db, num, value)
@@ -64,7 +76,7 @@ class S7Comm:
         ret = self._s7obj.s7comm_write_byte(self._s7conn, db, num, value)
 
         if ret != 0:
-            raise "Aiii"
+            raise S7Exception(self._err_to_string(ret), ret)
 
     def writeInt8(self, db, num, value):
         self._writeByte(db, num, ctypes.c_int8(value))
@@ -77,7 +89,7 @@ class S7Comm:
         ret = self._s7obj.s7comm_read_bit(self._s7conn, db, num, ctypes.byref(value))
 
         if ret != 0:
-            raise "Aiii"
+            raise S7Exception(self._err_to_string(ret), ret)
 
         if value.value != 0:
             return 1
@@ -93,4 +105,4 @@ class S7Comm:
         ret = self._s7obj.s7comm_write_bit(self._s7conn, db, num, val)
 
         if ret != 0:
-            raise "Aiii"
+            raise S7Exception(self._err_to_string(ret), ret)
