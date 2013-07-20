@@ -14,19 +14,23 @@ class S7Comm:
         self._address = address
         self._s7obj = ctypes.CDLL("libs7comm.so.0.1")
 
+        self._s7obj.s7comm_connect.restype = ctypes.c_void_p
+        self._s7obj.err_to_string.restype = ctypes.c_char_p
+
         c_address = ctypes.create_string_buffer(address)
-        self._s7conn = self._s7obj.s7comm_connect(c_address)
+        tmp = self._s7obj.s7comm_connect(c_address)
+        self._s7conn = ctypes.c_void_p(tmp)
         if not self._s7conn:
             raise S7Exception("Unable to connect", -1)
 
     def __del__(self):
         if self._s7conn:
             self._s7obj.s7comm_disconnect(self._s7conn)
+        self._s7obj = None
         self._s7conn = None
         self._address = None
 
     def _err_to_string(self, err):
-        self._s7obj.err_to_string.restype = ctypes.c_char_p
         return self._s7obj.err_to_string(err)
 
     def _readWord(self, db, num, value):
