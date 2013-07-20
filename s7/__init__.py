@@ -85,9 +85,9 @@ class S7Comm:
     def writeUInt8(self, db, num, value):
         self._writeByte(db, num, ctypes.c_uint8(value))
 
-    def readBit(self, db, num):
+    def readBit(self, db, byteNum, bitNum):
         value = ctypes.c_uint8()
-        ret = self._s7obj.s7comm_read_bit(self._s7conn, db, num, ctypes.byref(value))
+        ret = self._s7obj.s7comm_read_bit(self._s7conn, db, (byteNum * 8) + bitNum, ctypes.byref(value))
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
@@ -97,13 +97,13 @@ class S7Comm:
         else:
             return 0
 
-    def writeBit(self, db, num, value):
+    def writeBit(self, db, byteNum, bitNum, value):
         val = ctypes.c_uint8()
         if value:
             val.value = 1
         else:
             val.value = 0
-        ret = self._s7obj.s7comm_write_bit(self._s7conn, db, num, val)
+        ret = self._s7obj.s7comm_write_bit(self._s7conn, db, (byteNum * 8) + bitNum, val)
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
