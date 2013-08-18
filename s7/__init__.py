@@ -55,7 +55,7 @@ class S7Comm:
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
 
-    def writeUIn16(self, db, num, value):
+    def writeUInt16(self, db, num, value):
         self._writeWord(db, num, value)
 
     def writeInt16(self, db, num, value):
