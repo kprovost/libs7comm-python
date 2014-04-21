@@ -111,3 +111,15 @@ class S7Comm:
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
+
+    def readFlagBit(self, byteNum, bitNum):
+        value = ctypes.c_uint8()
+        ret = self._s7obj.s7comm_read_flag_bit(self._s7conn, (byteNum * 8) + bitNum, ctypes.byref(value))
+
+        if ret != 0:
+            raise S7Exception(self._err_to_string(ret), ret)
+
+        if value.value != 0:
+            return 1
+        else:
+            return 0
