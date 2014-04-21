@@ -12,7 +12,7 @@ class S7Exception:
 class S7Comm:
     def __init__(self, address):
         self._address = address
-        self._s7obj = ctypes.CDLL("libs7comm.so.0.1")
+        self._s7obj = ctypes.CDLL("libs7comm.so.0.0")
 
         self._s7obj.s7comm_connect.restype = ctypes.c_void_p
         self._s7obj.err_to_string.restype = ctypes.c_char_p
