@@ -123,3 +123,14 @@ class S7Comm:
             return 1
         else:
             return 0
+
+    def writeFlagBit(self, byteNum, bitNum, value):
+        val = ctypes.c_uint8()
+        if value:
+            val.value = 1
+        else:
+            val.value = 0
+        ret = self._s7obj.s7comm_write_flag_bit(self._s7conn, (byteNum * 8) + bitNum, val)
+
+        if ret != 0:
+            raise S7Exception(self._err_to_string(ret), ret)
