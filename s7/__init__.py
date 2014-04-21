@@ -34,7 +34,7 @@ class S7Comm:
         return self._s7obj.err_to_string(err)
 
     def _readWord(self, db, num, value):
-        ret = self._s7obj.s7comm_read_word(self._s7conn, db, num, ctypes.byref(value))
+        ret = self._s7obj.s7comm_read_db_word(self._s7conn, db, num, ctypes.byref(value))
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
@@ -50,7 +50,7 @@ class S7Comm:
         return value.value
 
     def _writeWord(self, db, num, value):
-        ret = self._s7obj.s7comm_write_word(self._s7conn, db, num, value)
+        ret = self._s7obj.s7comm_write_db_word(self._s7conn, db, num, value)
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
@@ -62,7 +62,7 @@ class S7Comm:
         self._writeWord(db, num, value)
 
     def _readByte(self, db, num, value):
-        ret = self._s7obj.s7comm_read_byte(self._s7conn, db, num, ctypes.byref(value))
+        ret = self._s7obj.s7comm_read_db_byte(self._s7conn, db, num, ctypes.byref(value))
 
         if ret != 0:
             raise "Aiii"
@@ -78,7 +78,7 @@ class S7Comm:
         return value.value
 
     def _writeByte(self, db, num, value):
-        ret = self._s7obj.s7comm_write_byte(self._s7conn, db, num, value)
+        ret = self._s7obj.s7comm_write_db_byte(self._s7conn, db, num, value)
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
@@ -91,7 +91,7 @@ class S7Comm:
 
     def readBit(self, db, byteNum, bitNum):
         value = ctypes.c_uint8()
-        ret = self._s7obj.s7comm_read_bit(self._s7conn, db, (byteNum * 8) + bitNum, ctypes.byref(value))
+        ret = self._s7obj.s7comm_read_db_bit(self._s7conn, db, (byteNum * 8) + bitNum, ctypes.byref(value))
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
@@ -107,7 +107,7 @@ class S7Comm:
             val.value = 1
         else:
             val.value = 0
-        ret = self._s7obj.s7comm_write_bit(self._s7conn, db, (byteNum * 8) + bitNum, val)
+        ret = self._s7obj.s7comm_write_db_bit(self._s7conn, db, (byteNum * 8) + bitNum, val)
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
