@@ -2,6 +2,18 @@
 import ctypes
 
 class S7Exception:
+    ERR_NONE = 0
+    ERR_SEND_FAILED = 1
+    ERR_RECV_FAILED = 2
+    ERR_CONNECTION_FAILED = 3
+    ERR_CONNECTION_CLOSED = 4
+    ERR_TIMEOUT = 5
+    ERR_READ_FAILURE = 6
+    ERR_WRITE_FAILURE = 7
+    ERR_NO_SUCH_VALUE = 8
+    ERR_NOT_SUPPORTED = 9
+    ERR_UNKNOWN = 10
+
     def __init__(self, msg, err):
         self._err = err
         self._msg = msg
