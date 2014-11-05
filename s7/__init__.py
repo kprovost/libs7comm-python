@@ -9,6 +9,9 @@ class S7Exception:
     def __str__(self):
         return "%s (%d)" % (self._msg, self._err)
 
+    def errno(self):
+        return self._err
+
 class S7Comm:
     def __init__(self, address):
         self._address = address
