@@ -149,3 +149,12 @@ class S7Comm:
 
         if ret != 0:
             raise S7Exception(self._err_to_string(ret), ret)
+
+    def readInput(self, card, port):
+        val = ctypes.c_bool()
+        ret = self._s7obj.s7comm_read_input(self._s7conn, card, port, ctypes.byref(val))
+
+        if ret != 0:
+            raise S7Exception(self._err_to_string(ret), ret)
+
+        return val.value
