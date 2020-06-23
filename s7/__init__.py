@@ -25,7 +25,7 @@ class S7Exception:
         return self._err
 
 class S7Comm:
-    def __init__(self, address):
+    def __init__(self, address, devtype):
         self._address = address
         self._s7obj = ctypes.CDLL("libs7comm.so.0.0")
 
@@ -33,7 +33,7 @@ class S7Comm:
         self._s7obj.err_to_string.restype = ctypes.c_char_p
 
         c_address = ctypes.create_string_buffer(address)
-        tmp = self._s7obj.s7comm_connect(c_address)
+        tmp = self._s7obj.s7comm_connect(c_address, devtype)
         self._s7conn = ctypes.c_void_p(tmp)
         if not self._s7conn:
             raise S7Exception("Unable to connect", -1)
