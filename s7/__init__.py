@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import ctypes
 
-class S7Exception:
+class S7Exception(BaseException):
     ERR_NONE = 0
     ERR_SEND_FAILED = 1
     ERR_RECV_FAILED = 2
