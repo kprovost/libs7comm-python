@@ -24,6 +24,49 @@ class S7Exception(BaseException):
     def errno(self):
         return self._err
 
+class StubS7:
+    def readInt16(self, db, num):
+        return 0
+
+    def readUInt16(self, db, num):
+        return 0
+
+    def writeUInt16(self, db, num, value):
+        return True
+
+    def writeInt16(self, db, num, value):
+        return True
+
+    def readInt8(self, db, num):
+        return 0
+
+    def readUInt8(self, db, num):
+        return 0
+
+    def writeInt8(self, db, num, value):
+        return True
+
+    def writeUInt8(self, db, num, value):
+        return True
+
+    def readBit(self, db, byteNum, bitNum):
+        return 0
+
+    def writeBit(self, db, byteNum, bitNum, value):
+        return True
+
+    def readFlagBit(self, byteNum, bitNum):
+        return 0
+
+    def writeFlagBit(self, byteNum, bitNum, value):
+        return True
+
+    def readInput(self, card, port):
+        return 0
+
+    def readOutput(self, card, port):
+        return 0
+
 class S7Comm:
     def __init__(self, address, devtype):
         self._address = address
